@@ -1,0 +1,23 @@
+{
+  "name": "mean",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyendthinh/Angular2Review.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nguyendthinh/Angular2Review/issues"
+  },
+  "homepage": "https://github.com/nguyendthinh/Angular2Review#readme",
+  "dependencies": {
+    "express": "^4.16.2",
+    "mongoose": "^4.13.9"
+  }
+}
