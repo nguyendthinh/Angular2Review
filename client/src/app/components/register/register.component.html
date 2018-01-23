@@ -1,0 +1,44 @@
+<h1 class="page-header">REGISTER ROUTE</h1>
+
+<form [formGroup]="form" (submit)="onRegisterSubmit()">
+
+  <!-- Username Input -->
+  <div class="form-group">
+    <label for="username">Username</label>
+    <div>
+      <input type="text" name="username" class="form-control" autocomplete="off" placeholder="*Username"  />
+      <!-- Validation -->
+    </div>
+  </div>
+
+  <!-- Email Input -->
+  <div class="form-group">
+    <label for="email">Email</label>
+    <div>
+      <input type="text" name="email" class="form-control" autocomplete="off" placeholder="*Email"/>
+      <!-- Validation -->
+    </div>
+  </div>
+
+  <!-- Password Input -->
+  <div class="form-group">
+    <label for="password">Password</label>
+    <div>
+      <input type="password" name="password" class="form-control" autocomplete="off" placeholder="*Password" />
+      <!-- Validation -->
+    </div>
+  </div>
+
+  <!-- Confirm Password Input -->
+  <div class="form-group">
+    <label for="confirm">Confirm Password</label>
+    <div>
+      <input type="password" name="confirm" class="form-control" autocomplete="off" placeholder="*Confirm Password" />
+      <!-- Validation -->
+    </div>
+  </div>
+
+  <!-- Submit Input -->
+  <input type="submit" class="btn btn-primary" value="Submit" />
+
+</form>
