@@ -122,7 +122,7 @@ userSchema.pre('save', function(next) {
   if (!this.isModified('password')) {
     return next();
   }
-  bcrypt.hash(this.password, null, null, function(err, hash){
+  bcrypt.hash(this.password, null, null,(err, hash) => {
     if (err) {
       return next(err);
     } else {
@@ -132,7 +132,7 @@ userSchema.pre('save', function(next) {
   })
 });
 
-userSchema.methods.comparePassword = function(password) {
+userSchema.methods.comparePassword = (password) => {
   return bcrypt.compareSync(password, this.password);
 }
 
