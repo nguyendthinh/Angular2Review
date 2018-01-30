@@ -125,7 +125,7 @@ export class RegisterComponent implements OnInit {
         this.messageClass = 'alert alert-success';
         this.message = data.message;
         setTimeout(() => {
-          this.router.navigate(['/login']);
+          this.router.navigate(['/login']); // Redirect to login view
         }, 1500);
       }
     })
