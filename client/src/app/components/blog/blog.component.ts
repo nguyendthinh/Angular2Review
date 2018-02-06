@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-blog',
@@ -11,8 +13,38 @@ export class BlogComponent implements OnInit {
   message;
   newPost = false;
   loadingBlogs = false;
+  form;
 
-  constructor() { }
+  constructor(
+    private formBuilder: FormBuilder
+  ) {
+    this.createNewBlogForm()
+  }
+
+  createNewBlogForm(){
+    this.form = this.formBuilder.group({
+      title: ['', Validators.compose([
+        Validators.required,
+        Validators.maxLength(50),
+        Validators.minLength(5),
+        this.alphaNumericValidation
+      ])],
+      body: ['', Validators.compose([
+        Validators.required,
+        Validators.maxLength(500),
+        Validators.minLength(5)
+      ])]
+    })
+  }
+
+  alphaNumericValidation(controls){
+    const regExp = new RegExp(/^[a-zA-Z0-9 ]+$/);
+    if (regExp.test(controls.value)) {
+      return null
+    } else {
+      return { 'alphaNumericValidation': true}
+    }
+  }
 
   newBlogForm(){
     this.newPost = true;
@@ -26,7 +58,7 @@ export class BlogComponent implements OnInit {
   }
 
   draftComment(){
-    
+
   }
 
   ngOnInit() {

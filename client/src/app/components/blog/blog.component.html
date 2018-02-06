@@ -7,6 +7,9 @@
   <span class="glyphicon glyphicon-repeat"></span>&nbsp;&nbsp;Reload
 </button>
 
+<form [formGroup]="form" name="blogForm" (submit)="onBlogSubmit()">
+</form>
+
 <div *ngIf="!newPost">
   <div class="panel panel-primary">
     <div class="panel-heading">

@@ -46,7 +46,7 @@ let bodyLengthChecker = (body) => {
     return false;
   }
   else {
-    if (username.length < 5 || username.length > 500) {
+    if (body.length < 5 || body.length > 500) {
       return false;
     }
     else {

@@ -22,7 +22,7 @@ module.exports = (router) => {
         createdBy: req.body.createdBy
       })
       blog.save((err) => {
-        if (err.errors){
+        if (err){
           if (err.errors.title) {
             res.json({ success: false, message: err.errors.title.message});
           }
@@ -30,14 +30,17 @@ module.exports = (router) => {
             res.json({ success: false, message: err.errors.body.message});
           }
           else {
-            res.json({ success: false, message: 'Blog creator is required'});
+            res.json({ success: false, message: err });
           }
         }
 
+        else {
+          res.json({ success: true, message: "Blog saved!"});
         }
-      })
-    }
-  })
 
-  return router;
-}
+      })
+      }
+    })
+    return router;
+
+  }
