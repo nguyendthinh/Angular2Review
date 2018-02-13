@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 
 ///Email Validations
 
+//check blog title length
+
 let titleLengthChecker = (title) => {
   if (!title) {
     return false;
@@ -18,6 +20,8 @@ let titleLengthChecker = (title) => {
   }
 };
 
+//check to see if title format is correct
+
 let alphaNumericTitleChecker = (title) => {
   if (!title) {
     return false;
@@ -27,6 +31,8 @@ let alphaNumericTitleChecker = (title) => {
     return regExp.test(title);
   }
 }
+
+// validators array for title
 
 const titleValidators = [{
     validator: titleLengthChecker,
@@ -40,6 +46,8 @@ const titleValidators = [{
 
 
 // Username Validations
+
+//check blog body length
 
 let bodyLengthChecker = (body) => {
   if (!body) {
@@ -55,12 +63,16 @@ let bodyLengthChecker = (body) => {
   }
 }
 
+//validator array for body
+
 const bodyValidators = [
   {
       validator: bodyLengthChecker,
       message: 'Body must be more than 5 characters but no more than 500'
     }
-]
+];
+
+//check comment length
 
 let commentLengthChecker = (comment) => {
   if (comment[0]) {
@@ -76,12 +88,16 @@ let commentLengthChecker = (comment) => {
   }
 }
 
+//validator array for comment section
+
 const commentValidators = [
   {
       validator: commentLengthChecker,
       message: 'Comments may not exceed 200 characters'
     }
 ]
+
+//Blog record definition
 
 var blogSchema = new Schema({
   title: { type: String, required: true, validate: titleValidators},

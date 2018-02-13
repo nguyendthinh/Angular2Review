@@ -14,11 +14,12 @@ export class NotAuthGuard implements CanActivate {
 
   // Function to check if user is authorized to view route
   canActivate() {
+    // check if user is logged in
     if (this.authService.loggedIn()){
-      this.router.navigate(['/'])
-      return false;
+      this.router.navigate(['/']) // route to homepage
+      return false; //user can't view route
     } else {
-      return true;
+      return true; //user is allowed to view route
     }
   }
 }

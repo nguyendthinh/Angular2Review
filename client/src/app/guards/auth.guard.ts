@@ -20,12 +20,13 @@ export class AuthGuard implements CanActivate {
     router: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
+    // check if user if logged in
     if (this.authService.loggedIn()){
-      return true;
+      return true; //user is allowed to view route
     } else {
-      this.redirectUrl = state.url;
+      this.redirectUrl = state.url; //grab the previous url that was visited
       this.router.navigate(['/login'])
-      return false;
+      return false; //user is not allowed to view page
     }
   }
 }

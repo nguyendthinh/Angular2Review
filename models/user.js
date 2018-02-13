@@ -118,22 +118,27 @@ var userSchema = new Schema({
   password: { type: String, required: true, validate: passwordValidators}
 });
 
+//Schema Middleware to encrypt password
+
 userSchema.pre('save', function(next) {
+  //Ensure passwored is new or modified before applying encryption
   if (!this.isModified('password')) {
     return next();
   }
+  //apply encrytpion
   bcrypt.hash(this.password, null, null,(err, hash) => {
     if (err) {
       return next(err);
     } else {
-      this.password = hash;
-      next();
+      this.password = hash; //apply encryption to password
+      next(); //EXIT MIDDLEWARE
     }
   })
 });
 
+//METHOD to compare password that was inputed to encrypted password upon login
 userSchema.methods.comparePassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
+  return bcrypt.compareSync(password, this.password); //return comparison as true or false
 }
 
 module.exports = mongoose.model('User', userSchema);

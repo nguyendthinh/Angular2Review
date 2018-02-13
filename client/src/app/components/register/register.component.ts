@@ -24,11 +24,12 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {
-    this.createForm()
+    this.createForm() //create Angular 2 Reactive Form when component loads
   }
 
   createForm() {
     this.form = this.formBuilder.group({
+      //composed reactive field inputs, insert validations into inputs including custom validator functions
       email: ['', Validators.compose([
         Validators.required,
         Validators.minLength(5),
@@ -48,7 +49,7 @@ export class RegisterComponent implements OnInit {
         this.validatePassword
       ])],
       confirm: ['', Validators.required]
-    }, { validator: this.matchingPasswords('password', 'confirm')})
+    }, { validator: this.matchingPasswords('password', 'confirm')}) //custom validator for form: to compare inputs for password and confirm fields
   }
 
   disableForm(){
@@ -96,6 +97,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // ensure passwords match
   matchingPasswords(password, confirm){
     return (group: FormGroup) => {
       if (group.controls[password].value === group.controls[confirm].value){
@@ -106,20 +108,22 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  //submit registration form
   onRegisterSubmit(){
-    this.processing = true;
-    this.disableForm()
+    this.processing = true; //notify HTML that form is currently processing and disable submit button
+    this.disableForm() //disable form
     const user = {
       email: this.form.get('email').value,
       username: this.form.get('username').value,
       password: this.form.get('password').value
     }
 
+    /// Register user through authService method
     this.authService.registerUser(user).subscribe(data => {
       if (!data.success){
-        this.messageClass = 'alert alert-danger';
-        this.message = data.message;
-        this.processing = false;
+        this.messageClass = 'alert alert-danger'; //set pop-up message color
+        this.message = data.message; //set pop-up message text
+        this.processing = false; //renable submit button
         this.enableForm()
       } else {
         this.messageClass = 'alert alert-success';
@@ -131,6 +135,7 @@ export class RegisterComponent implements OnInit {
     })
   }
 
+  //Check to see if email is taken
   checkEmail(){
     this.authService.checkEmail(this.form.get('email').value).subscribe(data => {
       if (!data.success){
@@ -143,6 +148,8 @@ export class RegisterComponent implements OnInit {
       }
     })
   }
+
+  //Check to see if username is taken
 
   checkUsername(){
     this.authService.checkUsername(this.form.get('username').value).subscribe(data => {

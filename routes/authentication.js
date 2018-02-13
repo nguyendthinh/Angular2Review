@@ -4,8 +4,10 @@ const config = require('../config/database');
 
 module.exports = (router) => {
 
+  // REGISTER ROUTE (create users) //
+
   router.post('/register', (req, res) => {
-    ////
+
     if (!req.body.email) {
       res.json({success: false, message: 'You must provide an email'})
     }
@@ -23,12 +25,12 @@ module.exports = (router) => {
         password: req.body.password
       })
 
-      ////////
+      // Save user to database //
 
       user.save((err) => {
 
         if (err) {
-
+          // Check to see if error is due to an already existing account
           if (err.code === 11000) {
             res.json({success: false, message: 'Username or email already exists'})
           }
@@ -54,6 +56,8 @@ module.exports = (router) => {
     }
   })
 
+  // LOGIN ROUTE (log users in through authentication)
+
   router.post('/login', (req, res) => {
     if (!req.body.username) {
       res.json({success: false, message: 'Username was not provided'});
@@ -70,12 +74,12 @@ module.exports = (router) => {
           res.json({success: false, message: 'Username not found'})
         }
         else {
-          const validPassword = user.comparePassword(req.body.password);
+          const validPassword = user.comparePassword(req.body.password); //compare password provided to password in database
           if (!validPassword) {
             res.json({success: false, message: 'Password invalid'})
           } else {
 
-            const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h'});
+            const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '24h'}); //create token for client if login was successful
 
             res.json({success: true, message: 'Success!', token: token, user: { username: user.username}})
           }
@@ -83,6 +87,8 @@ module.exports = (router) => {
       })
     }
   })
+
+  // CHECK IF USER'S USERNAME IS AVAILABLE FOR REGISTRATION //
 
   router.get('/checkUsername/:username', (req, res) => {
     if (!req.params.username){
@@ -102,6 +108,8 @@ module.exports = (router) => {
     }
   })
 
+  // CHECK IF USER'S EMAIL IS AVAILABLE FOR REGISTRATION //
+
   router.get('/checkEmail/:email', (req, res) => {
     if (!req.params.email){
       res.json({success: false, message: 'Email was not provided'});
@@ -120,25 +128,32 @@ module.exports = (router) => {
     }
   })
 
+  // MIDDLEWARE: grab user's token from headers for authentication
+
   router.use((req, res, next) => {
-    const token = req.headers['authorization'];
+    const token = req.headers['authorization']; //create token found in headers
+    // Check if token was found in headers
     if (!token) {
       res.json({success: false, message: 'No token provided'});
     }
     else {
+      // Check to see if token is valid
       jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
-          res.json({success: false, message: err});
+          res.json({success: false, message: err}); //Token either expired or is invalid
         }
         else {
-          req.decoded = decoded;
-          next();
+          req.decoded = decoded;  //create global variable to use in any request during the user's logged in session
+          next(); //exit middleware <--- IMPORTANT
         }
       })
     }
   });
 
+  // USER'S PROFILE DATA
+
   router.get('/profile', (req, res) => {
+    // Search for user in database by using decoded userId from token. select method returns on the user's username and email info
     User.findOne({ _id: req.decoded.userId }).select('username email').exec((err, user) => {
       if (err) {
         res.json({success: false, message: err});
@@ -147,7 +162,7 @@ module.exports = (router) => {
         res.json({success: false, message: 'User not found'});
       }
       else {
-        res.json({success: true, user: user});
+        res.json({success: true, user: user}); //send user object to be accessed in frontend
       }
     })
   })
